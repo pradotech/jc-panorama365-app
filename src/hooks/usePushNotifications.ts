@@ -1,26 +1,26 @@
 import { router } from 'expo-router';
-import * as Notifications from 'expo-notifications';
 import { useEffect } from 'react';
-import { getSlugFromNotification, registerForPushNotifications } from '@/services/notificationsService';
+import { initPushNotifications } from '@/services/notificationsService';
 
 /**
  * Registra o dispositivo para push e abre a matéria ao tocar na notificação
- * (inclusive quando o app foi aberto a partir dela).
+ * (inclusive quando o app foi aberto a partir dela). No Expo Go não faz nada.
  */
 export function usePushNotifications(): void {
   useEffect(() => {
-    void registerForPushNotifications();
+    let cleanup: (() => void) | undefined;
+    let cancelled = false;
 
-    const openFromResponse = (response: Notifications.NotificationResponse | null) => {
-      if (!response) return;
-      const slug = getSlugFromNotification(response);
-      if (slug) router.push({ pathname: '/noticia/[slug]', params: { slug } });
+    void initPushNotifications((slug) => {
+      router.push({ pathname: '/noticia/[slug]', params: { slug } });
+    }).then((fn) => {
+      if (cancelled) fn();
+      else cleanup = fn;
+    });
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
     };
-
-    openFromResponse(Notifications.getLastNotificationResponse());
-
-    const sub = Notifications.addNotificationResponseReceivedListener(openFromResponse);
-    return () => sub.remove();
   }, []);
 }
-

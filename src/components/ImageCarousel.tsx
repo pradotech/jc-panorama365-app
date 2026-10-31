@@ -1,17 +1,30 @@
 import { Image } from 'expo-image';
 import { useState } from 'react';
-import { FlatList, Text, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
+import { FlatList, View, type NativeScrollEvent, type NativeSyntheticEvent, type StyleProp, type ViewStyle } from 'react-native';
+import { colors } from '@/constants/theme';
 
-/** Carrossel de imagens da matéria (paginação horizontal). */
-export function ImageCarousel({ images }: { images: string[] }) {
-  const { width } = useWindowDimensions();
+interface Props {
+  images: string[];
+  width: number;
+  height: number;
+  showDots?: boolean;
+  style?: StyleProp<ViewStyle>;
+}
+
+/** Carrossel de imagens com indicadores (bolinhas) — idêntico ao ImageCarousel do portal. */
+export function ImageCarousel({ images, width, height, showDots = true, style }: Props) {
   const [index, setIndex] = useState(0);
-  const height = Math.round((width * 9) / 16);
 
-  if (images.length === 0) return null;
+  if (images.length === 0) {
+    return <View style={[{ width, height, backgroundColor: colors.navy100 }, style]} />;
+  }
 
   if (images.length === 1) {
-    return <Image source={images[0]} style={{ width, height }} contentFit="cover" transition={200} />;
+    return (
+      <View style={[{ width, height }, style]}>
+        <Image source={images[0]} style={{ width, height }} contentFit="cover" transition={200} />
+      </View>
+    );
   }
 
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -20,23 +33,37 @@ export function ImageCarousel({ images }: { images: string[] }) {
   };
 
   return (
-    <View>
+    <View style={[{ width, height }, style]}>
       <FlatList
         data={images}
         keyExtractor={(uri, i) => `${uri}-${i}`}
         horizontal
         pagingEnabled
+        nestedScrollEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={onScroll}
         scrollEventThrottle={16}
         renderItem={({ item }) => <Image source={item} style={{ width, height }} contentFit="cover" transition={200} />}
       />
-      <View className="absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1">
-        <Text className="text-xs font-semibold text-white">
-          {index + 1}/{images.length}
-        </Text>
-      </View>
+      {showDots && images.length <= 8 ? (
+        <View
+          className="absolute flex-row items-center gap-1.5 self-center rounded-full px-2 py-1"
+          style={{ bottom: 10, backgroundColor: 'rgba(0,0,0,0.4)' }}
+          pointerEvents="none"
+        >
+          {images.map((uri, i) => (
+            <View
+              key={`${uri}-dot-${i}`}
+              className="rounded-full"
+              style={{
+                width: i === index ? 16 : 6,
+                height: 6,
+                backgroundColor: i === index ? '#fff' : 'rgba(255,255,255,0.5)',
+              }}
+            />
+          ))}
+        </View>
+      ) : null}
     </View>
   );
 }
-

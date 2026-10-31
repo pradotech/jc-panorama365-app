@@ -17,7 +17,7 @@
     "android": {
       "package": "br.com.jc.app",
       "adaptiveIcon": {
-        "backgroundColor": "#0F1A2E",
+        "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"

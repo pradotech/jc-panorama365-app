@@ -1,18 +1,10 @@
-import Constants from 'expo-constants';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
 import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+import type * as NotificationsModule from 'expo-notifications';
 import { Platform } from 'react-native';
 import { supabase } from '@/lib/supabase';
 
-/** Exibe notificações mesmo com o app aberto. */
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+type Notifications = typeof NotificationsModule;
 
 export const BREAKING_CHANNEL_ID = 'breaking-news';
 
@@ -21,16 +13,83 @@ export interface NewsNotificationData {
   slug?: string;
 }
 
-export function getSlugFromNotification(response: Notifications.NotificationResponse): string | null {
-  const data = response.notification.request.content.data as NewsNotificationData | undefined;
+/**
+ * Push não existe no Expo Go (módulo nativo removido desde o SDK 53).
+ * Só funciona em development build ou no app publicado.
+ */
+export function isPushSupported(): boolean {
+  if (Constants.appOwnership === 'expo') return false;
+  if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) return false;
+  return true;
+}
+
+/** Carrega expo-notifications sob demanda — importar no topo quebra o app no Expo Go. */
+async function loadNotifications(): Promise<Notifications | null> {
+  if (!isPushSupported()) return null;
+  try {
+    return await import('expo-notifications');
+  } catch (e) {
+    console.warn('Push: módulo de notificações indisponível:', e);
+    return null;
+  }
+}
+
+function getSlug(response: NotificationsModule.NotificationResponse | null): string | null {
+  if (!response) return null;
+  const data = response.notification?.request?.content?.data as NewsNotificationData | undefined;
   return typeof data?.slug === 'string' && data.slug.length > 0 ? data.slug : null;
+}
+
+/**
+ * Inicializa push: exibição em primeiro plano, registro do token e abertura da matéria ao tocar.
+ * Retorna a função de limpeza dos listeners.
+ */
+export async function initPushNotifications(onOpenArticle: (slug: string) => void): Promise<() => void> {
+  if (!isPushSupported()) return () => {};
+
+  let Notifications: Notifications | null = null;
+  try {
+    Notifications = await loadNotifications();
+  } catch {
+    return () => {};
+  }
+  if (!Notifications) return () => {};
+
+  try {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
+      }),
+    });
+
+    void registerForPushNotifications(Notifications);
+
+    // App aberto a partir de uma notificação (aguarda o app montar a navegação)
+    const initialSlug = getSlug(Notifications.getLastNotificationResponse());
+    if (initialSlug) {
+      setTimeout(() => onOpenArticle(initialSlug), 500);
+    }
+
+    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
+      const slug = getSlug(response);
+      if (slug) onOpenArticle(slug);
+    });
+
+    return () => sub.remove();
+  } catch (e) {
+    console.warn('Push: erro ao inicializar listeners:', e);
+    return () => {};
+  }
 }
 
 /**
  * Solicita permissão, obtém o Expo Push Token e o registra no Supabase.
  * Retorna o token ou null (simulador, permissão negada ou projeto EAS ainda não configurado).
  */
-export async function registerForPushNotifications(): Promise<string | null> {
+async function registerForPushNotifications(Notifications: Notifications): Promise<string | null> {
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync(BREAKING_CHANNEL_ID, {
       name: 'Últimas notícias',

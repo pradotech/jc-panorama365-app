@@ -12,6 +12,8 @@
     "doctor": "expo-doctor"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.4.2",
+    "@expo-google-fonts/merriweather": "^0.4.2",
     "@native-html/render": "^1.0.4",
     "@supabase/supabase-js": "^2.118.0",
     "expo": "~57.0.31",

@@ -12,8 +12,8 @@ export function LoadingView() {
 export function EmptyState({ title, description }: { title: string; description?: string }) {
   return (
     <View className="items-center px-8 py-16">
-      <Text className="text-center text-base font-semibold text-navy-500">{title}</Text>
-      {description ? <Text className="mt-1 text-center text-sm text-navy-400">{description}</Text> : null}
+      <Text className="text-center font-inter-semibold text-base text-navy-500">{title}</Text>
+      {description ? <Text className="mt-1 text-center font-inter text-sm text-navy-400">{description}</Text> : null}
     </View>
   );
 }

@@ -1,29 +1,26 @@
 import { Text, View } from 'react-native';
 import { getCategoryById } from '@/constants/categories';
 
-interface Props {
-  categoryId: string;
-  /** "solid" sobre imagens; "subtle" em fundos claros. */
-  variant?: 'solid' | 'subtle';
-}
+type Size = 'sm' | 'md';
 
-export function CategoryBadge({ categoryId, variant = 'subtle' }: Props) {
+const SIZES: Record<Size, { container: string; text: string; icon: number }> = {
+  sm: { container: 'px-2.5 py-1 gap-1', text: 'text-xs', icon: 12 },
+  md: { container: 'px-3 py-1.5 gap-1.5', text: 'text-sm', icon: 14 },
+};
+
+/** Badge de categoria (pílula com ícone) — idêntico ao CategoryBadge do portal. */
+export function CategoryBadge({ categoryId, size = 'sm' }: { categoryId: string; size?: Size }) {
   const cat = getCategoryById(categoryId);
   if (!cat) return null;
+  const Icon = cat.icon;
+  const s = SIZES[size];
 
-  const solid = variant === 'solid';
   return (
-    <View
-      className="self-start rounded px-2 py-0.5"
-      style={{ backgroundColor: solid ? cat.color : cat.bgLight }}
-    >
-      <Text
-        className="text-[10px] font-bold uppercase tracking-wider"
-        style={{ color: solid ? '#ffffff' : cat.color }}
-      >
+    <View className={`flex-row items-center self-start rounded-full ${s.container}`} style={{ backgroundColor: cat.bgLight }}>
+      <Icon size={s.icon} color={cat.color} />
+      <Text className={`font-inter-semibold ${s.text}`} style={{ color: cat.color }}>
         {cat.name}
       </Text>
     </View>
   );
 }
-
