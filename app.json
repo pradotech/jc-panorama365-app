@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "JC",
-    "slug": "jc-app",
+    "name": "JC Panorama 365",
+    "slug": "jc-panorama365",
+    "owner": "pradotecnologia",
     "scheme": "jcapp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -48,6 +49,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7b8821c0-e747-4744-bd13-87be56dc420f"
+      }
     }
   }
 }
