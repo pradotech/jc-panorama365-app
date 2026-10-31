@@ -25,3 +25,4 @@ export function useMarketData() {
 
   return { stocks, dollar, loading };
 }
+

@@ -41,3 +41,4 @@ export function getCategoryById(id: string | null | undefined): Category | undef
 export function getCategoryBySlug(slug: string | null | undefined): Category | undefined {
   return categories.find((c) => c.slug === slug);
 }
+

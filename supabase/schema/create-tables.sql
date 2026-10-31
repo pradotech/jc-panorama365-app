@@ -1,7 +1,7 @@
 -- ============================================
 -- JC Panorama 365 — Setup do Banco de Dados
 -- Execute no Supabase SQL Editor:
--- https://supabase.com/dashboard/project/toqinygmtdlsoeocftor/sql/new
+-- Supabase Dashboard > SQL Editor
 -- ============================================
 
 -- 1. Tabela de notícias

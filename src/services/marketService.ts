@@ -218,3 +218,4 @@ export async function fetchDollarRate(): Promise<DollarResult | null> {
   writeCache<CachedSlot<DollarRate>>(key, { slotId, data: rate, timestamp: now });
   return { rate, lastUpdated: new Date(rate.updatedAt || now) };
 }
+

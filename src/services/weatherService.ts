@@ -139,3 +139,4 @@ export async function fetchWeatherData(coords: WeatherCoords = DEFAULT_COORDS): 
     return cached?.data ?? null;
   }
 }
+

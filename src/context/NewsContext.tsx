@@ -60,3 +60,4 @@ export function useNewsContext(): NewsContextValue {
   if (!ctx) throw new Error('useNewsContext deve ser usado dentro de NewsProvider');
   return ctx;
 }
+

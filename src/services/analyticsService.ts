@@ -24,3 +24,4 @@ export async function recordNewsView(newsId: string): Promise<void> {
     console.warn('Erro ao registrar visualização:', err);
   }
 }
+

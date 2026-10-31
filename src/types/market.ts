@@ -29,3 +29,4 @@ export interface DollarResult {
   rate: DollarRate;
   lastUpdated: Date;
 }
+

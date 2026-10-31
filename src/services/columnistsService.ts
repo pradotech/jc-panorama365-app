@@ -22,3 +22,4 @@ export async function fetchColumnists(): Promise<Columnist[]> {
   writeCache(CACHE_KEY, list);
   return list;
 }
+

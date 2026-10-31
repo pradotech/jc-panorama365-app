@@ -43,3 +43,4 @@ export interface WeatherCoords {
   latitude: number;
   longitude: number;
 }
+

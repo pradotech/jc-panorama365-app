@@ -39,3 +39,4 @@ $$;
 
 REVOKE ALL ON FUNCTION public.register_push_token(TEXT, TEXT) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.register_push_token(TEXT, TEXT) TO anon, authenticated;
+

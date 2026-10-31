@@ -55,3 +55,4 @@ npx eas-cli@latest submit --platform all
 ```
 Requisitos: conta Apple Developer (iOS), conta Google Play Console e projeto Firebase/FCM (push no Android),
 política de privacidade publicada e ícone 1024×1024 (`assets/icon.png`).
+

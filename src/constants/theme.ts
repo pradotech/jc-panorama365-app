@@ -20,3 +20,4 @@ export const colors = {
 
 /** URL pública do portal, usada nos links de compartilhamento. */
 export const PORTAL_URL = process.env.EXPO_PUBLIC_PORTAL_URL ?? '';
+

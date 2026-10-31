@@ -39,3 +39,4 @@ export function ImageCarousel({ images }: { images: string[] }) {
     </View>
   );
 }
+

@@ -38,3 +38,4 @@ export function Avatar({ name, uri, size = 48 }: Props) {
     </View>
   );
 }
+

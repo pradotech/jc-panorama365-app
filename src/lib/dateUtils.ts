@@ -60,3 +60,4 @@ export function getLocalDateString(date: Date = new Date()): string {
     return `${y}-${m}-${d}`;
   }
 }
+

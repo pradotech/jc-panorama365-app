@@ -1,7 +1,7 @@
 -- ==============================================================================
 -- JC Panorama 365 — Adicionar suporte a múltiplas imagens (Carrossel)
 -- Execute no SQL Editor do Supabase:
--- https://supabase.com/dashboard/project/toqinygmtdlsoeocftor/sql/new
+-- Supabase Dashboard > SQL Editor
 -- ==============================================================================
 
 -- 1. Adicionar coluna images (JSONB) na tabela news

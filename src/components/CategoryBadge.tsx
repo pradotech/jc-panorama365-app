@@ -26,3 +26,4 @@ export function CategoryBadge({ categoryId, variant = 'subtle' }: Props) {
     </View>
   );
 }
+

@@ -38,3 +38,4 @@ export interface Columnist {
   role: string | null;
   created_at: string | null;
 }
+

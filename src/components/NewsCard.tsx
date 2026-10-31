@@ -110,3 +110,4 @@ export function NewsCard({ article, variant = 'default' }: Props) {
     </Link>
   );
 }
+

@@ -23,3 +23,4 @@ export function usePushNotifications(): void {
     return () => sub.remove();
   }, []);
 }
+

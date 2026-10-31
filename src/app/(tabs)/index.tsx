@@ -127,3 +127,4 @@ function SeeAll({ href }: { href: { pathname: '/categoria/[slug]'; params: { slu
     </Link>
   );
 }
+

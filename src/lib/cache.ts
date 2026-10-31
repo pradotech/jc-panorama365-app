@@ -21,3 +21,4 @@ export function writeCache<T>(key: string, value: T): void {
     console.warn(`Não foi possível gravar o cache "${key}":`, e);
   }
 }
+

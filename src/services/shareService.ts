@@ -17,3 +17,4 @@ export async function shareArticle(article: Pick<News, 'slug' | 'title'>): Promi
     console.warn('Falha ao compartilhar:', e);
   }
 }
+

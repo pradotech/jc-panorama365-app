@@ -29,3 +29,4 @@ export function BreakingTicker({ items }: { items: News[] }) {
     </View>
   );
 }
+

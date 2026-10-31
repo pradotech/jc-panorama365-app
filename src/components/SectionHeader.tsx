@@ -21,3 +21,4 @@ export function SectionHeader({ title, icon: Icon, accentColor = '#1E56A0', righ
     </View>
   );
 }
+

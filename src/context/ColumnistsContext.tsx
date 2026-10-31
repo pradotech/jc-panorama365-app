@@ -37,3 +37,4 @@ export function useColumnistsContext(): ColumnistsContextValue {
   if (!ctx) throw new Error('useColumnistsContext deve ser usado dentro de ColumnistsProvider');
   return ctx;
 }
+

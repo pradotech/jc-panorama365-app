@@ -61,3 +61,4 @@ export function stripHtml(html: string | null | undefined): string {
     .replace(/\s+/g, ' ')
     .trim();
 }
+
